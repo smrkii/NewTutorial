@@ -32,7 +32,7 @@ public class MainGameLoop {
 
         while(!Display.isCloseRequested()){
             entity.increaseRotation(0, 1, 0);
-            camera.move();
+            //camera.move();
             renderer.prepare();
             shader.start();
             shader.loadViewMatrix(camera);
