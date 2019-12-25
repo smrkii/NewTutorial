@@ -1,4 +1,4 @@
-package renderGame;
+package renderEngine;
 
 import entities.Entity;
 import models.RawModel;

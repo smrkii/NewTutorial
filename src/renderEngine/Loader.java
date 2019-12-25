@@ -1,32 +1,36 @@
-package renderGame;
+package renderEngine;
+
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.RawModel;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import java.io.FileInputStream;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
-//Ta razred shranjuje 3d objekt v VAO.
 public class Loader {
 
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
-    public RawModel loadToVAO(float[] positions,float[] textureCoords,int[] indices){
+    public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals,int[] indices){
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0,3,positions);
         storeDataInAttributeList(1,2,textureCoords);
+        storeDataInAttributeList(2,3,normals);
         unbindVAO();
         return new RawModel(vaoID,indices.length);
     }
@@ -38,7 +42,7 @@ public class Loader {
                     new FileInputStream(fileName));
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Tried to load texture " + fileName + " , didn't work");
+            System.err.println("Tried to load texture " + fileName + ".png , didn't work");
             System.exit(-1);
         }
         textures.add(texture.getTextureID());

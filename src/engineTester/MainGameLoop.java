@@ -1,49 +1,67 @@
 package engineTester;
 
-import entities.Camera;
-import entities.Entity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import models.RawModel;
 import models.TexturedModel;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
-import renderGame.DisplayManager;
-import renderGame.Loader;
-import renderGame.OBJLoader;
-import renderGame.Renderer;
-import shaders.StaticShader;
+
+import renderEngine.DisplayManager;
+import renderEngine.Loader;
+import renderEngine.MasterRenderer;
+import renderEngine.OBJLoader;
+import terrains.Terrain;
 import textures.ModelTexture;
+import entities.Camera;
+import entities.Entity;
+import entities.Light;
 
 public class MainGameLoop {
+
     public static void main(String[] args) {
 
         DisplayManager.createDisplay();
         Loader loader = new Loader();
-        StaticShader shader = new StaticShader();
-        Renderer renderer = new Renderer(shader);
 
 
-        RawModel model = OBJLoader.loadObjModel("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\avto.obj",loader);
+        RawModel model = OBJLoader.loadObjModel("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\piramida.obj", loader);
 
-        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\avto_textura.png")));
+        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\piramida_textura.png")));
 
-        Entity entity = new Entity(staticModel, new Vector3f(0,0,-20),0,0,0,1);
+        List<Entity> entities = new ArrayList<Entity>();
+        Random random = new Random();
+        for(int i=0;i<500;i++){
+            entities.add(new Entity(staticModel, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat() * -600),0,0,0,3));
+        }
+
+        Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+
+        Terrain terrain = new Terrain(0,0,loader,new ModelTexture(loader.loadTexture("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\kocka_textura.png")));
+        Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\kocka_textura.png")));
 
         Camera camera = new Camera();
+        MasterRenderer renderer = new MasterRenderer();
 
         while(!Display.isCloseRequested()){
-            entity.increaseRotation(0, 1, 0);
-            //camera.move();
-            renderer.prepare();
-            shader.start();
-            shader.loadViewMatrix(camera);
-            renderer.render(entity,shader);
-            shader.stop();
+            camera.move();
+
+            renderer.processTerrain(terrain);
+            renderer.processTerrain(terrain2);
+            for(Entity entity:entities){
+                renderer.processEntity(entity);
+            }
+            renderer.render(light, camera);
             DisplayManager.updateDisplay();
         }
 
-        shader.cleanUp();
+        renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
 
     }
+
 }

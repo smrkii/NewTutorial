@@ -1,4 +1,4 @@
-package renderGame;
+package renderEngine;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,6 @@ import models.RawModel;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import renderGame.Loader;
 
 public class OBJLoader {
 
@@ -91,7 +90,7 @@ public class OBJLoader {
         for(int i=0;i<indices.size();i++){
             indicesArray[i] = indices.get(i);
         }
-        return loader.loadToVAO(verticesArray, textureArray, indicesArray);
+        return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 
     }
 
