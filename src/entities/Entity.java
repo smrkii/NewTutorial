@@ -11,7 +11,17 @@ public class Entity {
     private float rotX, rotY, rotZ;
     private float scale;
 
-    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
+    private float MaxX;
+    private float MaxY;
+    private float MaxZ;
+
+    private float MinX;
+    private float MinY;
+    private float MinZ;
+
+
+
+    public Entity(float[] vertexes,TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
                   float scale) {
         this.model = model;
         this.position = position;
@@ -19,6 +29,8 @@ public class Entity {
         this.rotY = rotY;
         this.rotZ = rotZ;
         this.scale = scale;
+
+        setMaxMinVertexes(vertexes);
     }
 
     public void increasePosition(float dx, float dy, float dz) {
@@ -33,8 +45,51 @@ public class Entity {
         this.rotZ += dz;
     }
 
+    public void setMaxMinVertexes(float[] vertices){
+        float CurrX;
+        float CurrY;
+        float CurrZ;
+
+        float MaxX=vertices[0];
+        float MaxY=vertices[1];
+        float MaxZ=vertices[2];
+
+        float MinX=vertices[0];
+        float MinY=vertices[1];
+        float MinZ=vertices[2];
+
+
+        for(int i =0;i<vertices.length;){
+            CurrX=vertices[i];
+            CurrY=vertices[i+1];
+            CurrZ=vertices[i+2];
+
+            if(CurrX>=MaxX){MaxX = CurrX;}
+            if(CurrY>=MaxY){MaxY = CurrY;}
+            if(CurrZ>=MaxZ){MaxZ = CurrZ;}
+
+            if(CurrX<=MinX){MinX = CurrX;}
+            if(CurrY<=MinY){MinY = CurrY;}
+            if(CurrZ<=MinZ){MinZ = CurrZ;}
+
+            i+=3;
+
+        }
+
+        this.MaxX=MaxX;
+        this.MaxY=MaxY;
+        this.MaxZ=MaxZ;
+
+        this.MinX=MinX;
+        this.MinY=MinY;
+        this.MinZ=MinZ;
+
+    }
+
+
     public TexturedModel getModel() {
         return model;
+
     }
 
     public void setModel(TexturedModel model) {
@@ -81,4 +136,27 @@ public class Entity {
         this.scale = scale;
     }
 
+    public float getMaxX() {
+        return MaxX;
+    }
+
+    public float getMaxY() {
+        return MaxY;
+    }
+
+    public float getMaxZ() {
+        return MaxZ;
+    }
+
+    public float getMinX() {
+        return MinX;
+    }
+
+    public float getMinY() {
+        return MinY;
+    }
+
+    public float getMinZ() {
+        return MinZ;
+    }
 }
