@@ -25,4 +25,30 @@ public class GuiTexture {
     public Vector2f getPosition() {
         return position;
     }
+
+    public void inscreaseScaleX(float x){
+        this.scale.x=this.scale.x+x;
+    }
+
+    public void inscreaseScaleY(float y){
+        this.scale.y=y;
+    }
+
+    public void setScaleX(float x){
+        this.scale.x=x;
+    }
+
+    public void inscreasePositionX(float x){
+        this.position.x=this.position.x+x;
+    }
+
+    public void inscreasePositionY(float y){
+        this.position.y=y;
+    }
+
+    public void setPositionX(float x){
+        this.position.x=x;
+    }
+
+
 }

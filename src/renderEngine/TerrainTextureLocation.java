@@ -14,7 +14,7 @@ public class TerrainTextureLocation {
     ArrayList<TerrainTextureLocation> KvadratiCoords = new ArrayList<TerrainTextureLocation>();
     ArrayList<TerrainTextureLocation> KrogiCoords = new ArrayList<TerrainTextureLocation>();
     ArrayList<TerrainTextureLocation> ValjCoords = new ArrayList<TerrainTextureLocation>();
-    ArrayList<TerrainTextureLocation> OgrajaCoords = new ArrayList<TerrainTextureLocation>();
+    ArrayList<TerrainTextureLocation> PiramidaCoords = new ArrayList<TerrainTextureLocation>();
 
     public ArrayList<TerrainTextureLocation> getKvadratiCoords() {
         return KvadratiCoords;
@@ -28,8 +28,8 @@ public class TerrainTextureLocation {
         return ValjCoords;
     }
 
-    public ArrayList<TerrainTextureLocation> getOgrajaCoords() {
-        return OgrajaCoords;
+    public ArrayList<TerrainTextureLocation> getPiramidaCoords() {
+        return PiramidaCoords;
     }
 
     public TerrainTextureLocation(int x, int y) {
@@ -37,16 +37,16 @@ public class TerrainTextureLocation {
         this.y = y;
     }
 
-    public TerrainTextureLocation() {
-        getCoords();
+    public TerrainTextureLocation(String image) {
+        getCoords(image);
     }
 
 
 
-    public void getCoords(){
+    public void getCoords(String imagePath){
         int counter=0;
 
-        File file= new File("C:\\Users\\smrki\\Documents\\rg\\NewTutorial\\res\\proga1.png");
+        File file= new File(imagePath);
         BufferedImage image = null;
         try {
             image = ImageIO.read(file);
@@ -62,7 +62,7 @@ public class TerrainTextureLocation {
                 int  blue  =  clr & 0x000000ff;
 
                 if(red==255 && green == 0 && blue==0){
-                    OgrajaCoords.add(new TerrainTextureLocation(i-100,j-60));
+                    PiramidaCoords.add(new TerrainTextureLocation(i-100,j-60));
                 }
                 else if(red==0 && green == 255 && blue==0){
                     ValjCoords.add(new TerrainTextureLocation(i-100,j-60));

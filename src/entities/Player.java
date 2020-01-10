@@ -26,9 +26,23 @@ public class Player extends Entity {
     private boolean backward=false;
     private boolean isInAir=false;
     private char keyDown='\0';
+    private boolean healthCollision=false;
+    private boolean collision=false;
+    private int healthCollisionCounter=0;
 
+    public boolean isDead() {
+        if(healthCollisionCounter==7){
+            healthCollisionCounter=0;
+            return true;
+        }
+        return false;
+    }
 
-    public Player(List<Entity> entities,float[] vertexes,TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public boolean isHealthCollision() {
+        return healthCollision;
+    }
+
+    public Player(List<Entity> entities, float[] vertexes, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(vertexes,model, position, rotX, rotY, rotZ, scale);
 
         this.entities=entities;
@@ -39,8 +53,7 @@ public class Player extends Entity {
             checkInputs();
         }
 
-        checkCollision();
-
+        this.collision=checkCollision();
 
         super.increaseRotation(0,currentTurnSpeed * DisplayManager.getFrameTimeSeconds(),0);
         float distance = currentSpeed * DisplayManager.getFrameTimeSeconds();
@@ -124,11 +137,15 @@ public class Player extends Entity {
                         this.currentSpeed=0;
                     }
 
+                    if(collision){
+                        healthCollision=false;
+                    }
+                    else{
+                        healthCollision=true;
+                        healthCollisionCounter++;
+                    }
                     return true;
                 }
-
-
-
             }
             return false;
 

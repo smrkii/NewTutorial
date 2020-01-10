@@ -25,7 +25,7 @@ public class DisplayManager {
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
             Display.create(new PixelFormat(), attribs);
-            Display.setTitle("Our First Display!");
+            Display.setTitle("F&F21");
         } catch (LWJGLException e) {
             e.printStackTrace();
         }
